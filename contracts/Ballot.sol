@@ -85,7 +85,7 @@ contract Ballot {
             "You have no right to vote"
         );
         require(
-            sender.voted,
+            !sender.voted,
             "You already voted."
         );
 
