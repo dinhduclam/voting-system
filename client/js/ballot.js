@@ -1,4 +1,4 @@
-contractAdress = '0xF32188B9856212502E14e189C4c484BfDD537546';
+contractAdress = '0x9aD6D2F7FD1b0b99A87bDF7A5A4900c77CA394eB';
 provider = 'ws://localhost:7545'
 maxGas = 1000000;
 
@@ -173,7 +173,6 @@ Ballot = {
         .then(proposals => {
             contract.methods.voterCount().call()
             .then(voterCount => {
-                console.log(voterCount)
                 var votedCount = 0;
                 proposals.forEach(x => votedCount += Number(x.voteCount));
 
