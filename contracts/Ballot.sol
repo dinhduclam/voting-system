@@ -128,18 +128,18 @@ contract Ballot {
         emit Delegate(msg.sender, to);
     }
 
-    function vote(uint proposal) external {
+    function vote(uint proposalId) external {
         Voter storage sender = voters[msg.sender];
         require(sender.weight != 0, "Has no right to vote");
         require(!sender.voted, "Already voted.");
         sender.voted = true;
-        sender.vote = proposal;
+        sender.vote = proposalId;
 
-        proposals[proposal].voteCount += sender.weight;
+        proposals[proposalId - 1].voteCount += sender.weight;
         votedCount += sender.weight;
         
         
-        emit Vote(msg.sender, proposals[proposal].name);
+        emit Vote(msg.sender, proposals[proposalId - 1].name);
         emit VotedCount(votedCount);
     }
 
