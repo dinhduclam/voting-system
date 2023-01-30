@@ -13,7 +13,6 @@ Ballot = {
 
         const web3 = new Web3(provider);
         const ballotContract = new web3.eth.Contract(ballot.abi, contractAdress);
-        console.log(ballotContract);
         contract  = ballotContract;
     },
 
@@ -23,9 +22,7 @@ Ballot = {
               const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
               return accounts[0];
             } catch (error) {
-              if (error.code === 4001) {
-                // User rejected request
-              }
+                throw new Error(`Get account address from MetaMask fail! ${error.message}`)
             }
           }
     },
@@ -39,19 +36,16 @@ Ballot = {
             console.log(response);
             return response;
         }
-            
-        
+
         sender = await this.getAccount();
-        console.log(sender)
         contract.methods.addProposal(name, age).send({from: sender, gas: maxGas})
-        .then(res => {
+        .then(_ => {
             const response = {
                 success: true,
                 message: 'Add proposal successfully!'
             };
 
             console.log(response);
-
             return response;
         })
         .catch(err => {
@@ -61,7 +55,6 @@ Ballot = {
             };
 
             console.log(response);
-
             return response;
         });
 
@@ -79,7 +72,6 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-        console.log(sender)
         contract.methods.giveRightToVote(address).send({from: sender, gas: maxGas})
         .then(res => {
             const response = {
@@ -88,7 +80,6 @@ Ballot = {
             };
 
             console.log(response);
-
             return response;
         })
         .catch(err => {
@@ -98,7 +89,6 @@ Ballot = {
             };
 
             console.log(response);
-
             return response;
         });
     },
@@ -114,16 +104,14 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-        console.log(sender);
         contract.methods.delegate(to).send({from: sender, gas: maxGas})
-        .then(res => {
+        .then(_ => {
             const response = {
                 success: true,
                 message: `Delegate to address ${to} successfully!`
             };
 
             console.log(response);
-
             return response;
         })
         .catch(err => {
@@ -133,11 +121,80 @@ Ballot = {
             };
 
             console.log(response);
+            return response;
+        });
+    },
 
+    vote: async function(proposalId){
+        if (typeof contract == 'undefined'){
+            const response = {
+                success: false,
+                message: `Vote fail! Contract is not defined`
+            };
+            console.log(response);
+            return response;
+        }
+
+        sender = await this.getAccount();
+        contract.methods.vote(proposalId).send({from: sender, gas: maxGas})
+        .then(_ => {
+            const response = {
+                success: true,
+                message: `Vote successfully!`
+            };
+
+            console.log(response);
+            return response;
+        })
+        .catch(err => {
+            const response = {
+                success: false,
+                message: `Vote fail! ${err.message}`
+            };
+
+            console.log(response);
+            return response;
+        });
+    },
+
+    getResult: async function() {
+        if (typeof contract == 'undefined'){
+            const response = {
+                success: false,
+                message: `Get result fail! Contract is not defined`
+            };
+            console.log(response);
+            return response;
+        }
+
+        sender = await this.getAccount();
+
+        contract.methods.getResult().call()
+        .then(proposals => {
+            contract.methods.voterCount().call()
+            .then(voterCount => {
+                console.log(voterCount)
+                var votedCount = 0;
+                proposals.forEach(x => votedCount += Number(x.voteCount));
+
+                const result = {
+                    voterCount: voterCount,
+                    votedCount: votedCount,
+                    proposals: proposals
+                }
+                console.log(result);
+                return result;
+            });
+        })
+        .catch(err => {
+            const response = {
+                success: false,
+                message: `Get result fail! ${err.message}`
+            };
+            console.log(response);
             return response;
         });
     }
-
 }
 
 window.onload = (event) => {
