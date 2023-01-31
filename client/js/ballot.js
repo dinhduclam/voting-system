@@ -1,4 +1,4 @@
-contractAdress = '0xa279b030Aa8f53620DB39d179e44Ea498Fc705A1';
+contractAdress = '0x051620D212e4aE4863e9E8ffBf3C7f917Ec7EcF3';
 provider = 'ws://localhost:7545'
 maxGas = 1000000;
 
@@ -38,7 +38,7 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-        contract.methods.addProposal(name, age).send({from: sender, gas: maxGas})
+        return await contract.methods.addProposal(name, age).send({from: sender, gas: maxGas})
         .then(_ => {
             const response = {
                 success: true,
@@ -72,7 +72,7 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-        contract.methods.giveRightToVote(address).send({from: sender, gas: maxGas})
+        return await contract.methods.giveRightToVote(address).send({from: sender, gas: maxGas})
         .then(res => {
             const response = {
                 success: true,
@@ -104,7 +104,7 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-        contract.methods.delegate(to).send({from: sender, gas: maxGas})
+        return await contract.methods.delegate(to).send({from: sender, gas: maxGas})
         .then(_ => {
             const response = {
                 success: true,
@@ -136,7 +136,7 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-        contract.methods.vote(proposalId).send({from: sender, gas: maxGas})
+        return await contract.methods.vote(proposalId).send({from: sender, gas: maxGas})
         .then(_ => {
             const response = {
                 success: true,
@@ -168,10 +168,10 @@ Ballot = {
         }
 
         sender = await this.getAccount();
-
-        contract.methods.getResult().call()
-        .then(proposals => {
-            contract.methods.voterCount().call()
+        
+        return await contract.methods.getResult().call()
+        .then(async proposals => {
+            return await contract.methods.voterCount().call()
             .then(voterCount => {
                 var votedCount = 0;
                 proposals.forEach(x => votedCount += Number(x.voteCount));
@@ -180,7 +180,7 @@ Ballot = {
                     success: true,
                     data: {
                         voterCount: voterCount,
-                        votedCount: votedCount,
+                        votedCount: votedCount.toString(),
                         proposals: proposals
                     }
                 }
