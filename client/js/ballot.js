@@ -1,4 +1,4 @@
-contractAdress = '0x9aD6D2F7FD1b0b99A87bDF7A5A4900c77CA394eB';
+contractAdress = '0xa279b030Aa8f53620DB39d179e44Ea498Fc705A1';
 provider = 'ws://localhost:7545'
 maxGas = 1000000;
 
@@ -177,10 +177,14 @@ Ballot = {
                 proposals.forEach(x => votedCount += Number(x.voteCount));
 
                 const result = {
-                    voterCount: voterCount,
-                    votedCount: votedCount,
-                    proposals: proposals
+                    success: true,
+                    data: {
+                        voterCount: voterCount,
+                        votedCount: votedCount,
+                        proposals: proposals
+                    }
                 }
+                
                 console.log(result);
                 return result;
             });
