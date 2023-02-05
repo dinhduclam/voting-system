@@ -21,6 +21,8 @@
 </head>
 
 <body id="page-top">
+    
+
 
     <div id="wrapper">
 
@@ -103,17 +105,111 @@
                             <h6 class="m-0 font-weight-bold text-primary">Give Right To Voter</h6>
                         </div>
                         <div class="card-body">
+                        <form action="">
                             <div>
+                                
+
                                 <div class="form-group">
                                   <label for="voter-address">Voter address</label>
                                   <input type="text" class="form-control" id="voter-address" placeholder="Enter voter address">
+                                  <input type="text" class="form-control" id="voter-name" placeholder="Enter Name">
+                                  <input type="number" id="voter-age" placeholder="Enter Age">
+                                  <input type="text" id="voter-card" placeholder="Enter identity card ">
+                                  <select id="voter-province" name= "flatform"    >
+                                    <option value="An Giang">An Giang
+                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu
+                                    <option value="Bắc Giang">Bắc Giang
+                                    <option value="Bắc Kạn">Bắc Kạn
+                                    <option value="Bạc Liêu">Bạc Liêu
+                                    <option value="Bắc Ninh">Bắc Ninh
+                                    <option value="Bến Tre">Bến Tre
+                                    <option value="Bình Định">Bình Định
+                                    <option value="Bình Dương">Bình Dương
+                                    <option value="Bình Phước">Bình Phước
+                                    <option value="Bình Thuận">Bình Thuận
+                                    <option value="Bình Thuận">Bình Thuận
+                                    <option value="Cà Mau">Cà Mau
+                                    <option value="Cao Bằng">Cao Bằng
+                                    <option value="Đắk Lắk">Đắk Lắk
+                                    <option value="Đắk Nông">Đắk Nông
+                                    <option value="Điện Biên">Điện Biên
+                                    <option value="Đồng Nai">Đồng Nai
+                                    <option value="Đồng Tháp">Đồng Tháp
+                                    <option value="Đồng Tháp">Đồng Tháp
+                                    <option value="Gia Lai">Gia Lai
+                                    <option value="Hà Giang">Hà Giang
+                                    <option value="Hà Nam">Hà Nam
+                                    <option value="Hà Tĩnh">Hà Tĩnh
+                                    <option value="Hải Dương">Hải Dương
+                                    <option value="Hậu Giang">Hậu Giang
+                                    <option value="Hòa Bình">Hòa Bình
+                                    <option value="Hưng Yên">Hưng Yên
+                                    <option value="Khánh Hòa">Khánh Hòa
+                                    <option value="Kiên Giang">Kiên Giang
+                                    <option value="Kon Tum">Kon Tum
+                                    <option value="Lai Châu">Lai Châu
+                                    <option value="Lâm Đồng">Lâm Đồng
+                                    <option value="Lạng Sơn">Lạng Sơn
+                                    <option value="Lào Cai">Lào Cai
+                                    <option value="Long An">Long An
+                                    <option value="Nam Định">Nam Định
+                                    <option value="Nghệ An">Nghệ An
+                                    <option value="Ninh Bình">Ninh Bình
+                                    <option value="Ninh Thuận">Ninh Thuận
+                                    <option value="Phú Thọ">Phú Thọ
+                                    <option value="Quảng Bình">Quảng Bình
+                                    <option value="Quảng Bình">Quảng Bình
+                                    <option value="Quảng Ngãi">Quảng Ngãi
+                                    <option value="Quảng Ninh">Quảng Ninh
+                                    <option value="Quảng Trị">Quảng Trị
+                                    <option value="Sóc Trăng">Sóc Trăng
+                                    <option value="Sơn La">Sơn La
+                                    <option value="Tây Ninh">Tây Ninh
+                                    <option value="Thái Bình">Thái Bình
+                                    <option value="Thái Nguyên">Thái Nguyên
+                                    <option value="Thanh Hóa">Thanh Hóa
+                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế
+                                    <option value="Tiền Giang">Tiền Giang
+                                    <option value="Trà Vinh">Trà Vinh
+                                    <option value="Tuyên Quang">Tuyên Quang
+                                    <option value="Vĩnh Long">Vĩnh Long
+                                    <option value="Vĩnh Phúc">Vĩnh Phúc
+                                    <option value="Yên Bái">Yên Bái
+                                    <option value="Phú Yên">Phú Yên
+                                    <option value="Cần Thơ">Tp.Cần Thơ
+                                    <option value="Đà Nẵng">Tp.Đà Nẵng
+                                    <option value="Hải Phòng">Tp.Hải Phòng
+                                    <option value="Hà Nội">Tp.Hà Nội
+                                    <option value="HCM">TP HCM
+                                    </select>
+                                    <button class="btn btn-primary" id="submitTest"  >Submit Test</button>
                                 </div>
+                            
                                 <button class="btn btn-primary" onclick="giveRightToVoter()">Submit</button>
                             </div>
+                        </form>
                         </div>
                         
                     </div>
                     
+                    <script>
+                        async function handleAddVoter(){
+                            console.log("test")
+                            try {
+                                const docRef = await addDoc(collection(db, "voters"), {
+                                 address: "Ada",
+                                 age: 19,
+                                 card: "abcsd",
+                                 name: "An",
+                                 province:"Quang Ninh"
+                            });
+                             console.log("Document written with ID: ", docRef.id);
+                            } catch (e) {
+                                 console.error("Error adding document: ", e);
+                            }   
+                        }
+                    </script>
+
                     <script>
                         async function giveRightToVoter(){
                             const address = $('#voter-address').val();
@@ -160,6 +256,12 @@
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="./js/ballot.js" type="text/javascript"></script>
 
+    <!-- connect with database -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="./App.js" type="module"></script>
+    
+    
 </body>
 
 </html>
