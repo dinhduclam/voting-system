@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/dinhduclam/voting-system#readme",
   "dependencies": {
-    "firebase": "^9.17.1"
+    "bootstrap": "^5.2.3",
+    "firebase": "^9.17.1",
+    "firebase-admin": "^11.5.0"
   }
 }

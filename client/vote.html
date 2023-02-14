@@ -151,6 +151,27 @@
     <script src="./js/ballot.js" type="text/javascript"></script>
 
     <script>
+        window.addEventListener('load', (event) => {
+            initFirebase();
+            console.log('The page has fully loaded');
+        });
+        function initFirebase(){
+            const firebaseConfig = {
+              apiKey: "AIzaSyBSF4DTIfBAs1B9OkVSmdSXKkx2FIGFpqU",
+              authDomain: "voting-system-94342.firebaseapp.com",
+              projectId: "voting-system-94342",
+              storageBucket: "voting-system-94342.appspot.com",
+              messagingSenderId: "390102264210",
+              appId: "1:390102264210:web:0a35051ec937ecc635f94b",
+              measurementId: "G-DJB7NYKSB4"
+            };
+            // Initialize Firebase
+            const app = firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            console.log(app)
+            console.log(db)
+        }
         addEventListener('load', async (event) => {
             await Ballot.initContract()
             .then(async _ => {
@@ -187,14 +208,71 @@
             
         });
 
+        async function getNameProposals(id){
+            const db = firebase.firestore();
+            return await db.collection("proposals")
+                .where("id", "==", id)
+                .get()
+                .then(async querySnapshot => {
+                    if (!querySnapshot.empty) {
+                        //We know there is one doc in the querySnapshot
+                        const nameProposal = await querySnapshot.docs[0].get("name");
+                        console.log(nameProposal)
+                        return nameProposal;
+                    } else {
+                        console.log("No document corresponding to the query!");
+                        return null;
+                    }
+                });
+        
+        }
+
+        async function getIdDocumentFromFirebasebyAddressforAccount(){
+            const db = firebase.firestore();
+            var sender = await Ballot.getAccount();
+            var senderId
+            return await db.collection("voters")
+                    .get()
+                    .then(async snap => {
+                        await snap.forEach( doc => {
+                            var tolowcaseAddressSender =  sender.toLowerCase();
+                            var tolowcaseAddressFirebase =  doc.get("address").toLowerCase();
+                            var IdDoc =  doc.id;
+                            if(tolowcaseAddressSender== tolowcaseAddressFirebase){
+                                senderId = IdDoc;
+                                
+                            }
+                            });
+                        return senderId;
+                    });
+        
+        }
+
         async function vote(id){
             const result = await Ballot.vote(id);
 
+            var addressAccount = await Ballot.getAccount();            
+           
             alert(result.message);
+            
+            if (result.success) {
+                const db = firebase.firestore();
+                docId = await getIdDocumentFromFirebasebyAddressforAccount()
+                var proposalName = await getNameProposals(id);
 
-            window.location.reload();
+                await db.collection("voters")
+                    .doc(docId)
+                    .update({
+                        vote: proposalName
+                    });
+
+                window.location.reload();
+            }
         };
     </script>
+    <!-- connect firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js" ></script>
 </body>
 
 </html>

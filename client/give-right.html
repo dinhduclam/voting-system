@@ -105,17 +105,20 @@
                             <h6 class="m-0 font-weight-bold text-primary">Give Right To Voter</h6>
                         </div>
                         <div class="card-body">
-                        <form action="">
                             <div>
                                 
 
                                 <div class="form-group">
                                   <label for="voter-address">Voter address</label>
                                   <input type="text" class="form-control" id="voter-address" placeholder="Enter voter address">
+                                  <label for="voter-name">Voter name</label>
                                   <input type="text" class="form-control" id="voter-name" placeholder="Enter Name">
-                                  <input type="number" id="voter-age" placeholder="Enter Age">
-                                  <input type="text" id="voter-card" placeholder="Enter identity card ">
-                                  <select id="voter-province" name= "flatform"    >
+                                  <label for="voter-age">Voter age</label>
+                                  <input type="number" class="form-control" id="voter-age" placeholder="Enter Age">
+                                  <label for="voter-card">Voter identity card</label>
+                                  <input type="text" class="form-control" id="voter-card" placeholder="Enter identity card ">
+                                  <label for="voter-province">Voter province</label>
+                                  <select id="voter-province" class="form-control"  name= "flatform"  >
                                     <option value="An Giang">An Giang
                                     <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu
                                     <option value="Bắc Giang">Bắc Giang
@@ -182,48 +185,108 @@
                                     <option value="Hà Nội">Tp.Hà Nội
                                     <option value="HCM">TP HCM
                                     </select>
-                                    <button class="btn btn-primary" id="submitTest"  >Submit Test</button>
                                 </div>
                             
                                 <button class="btn btn-primary" onclick="giveRightToVoter()">Submit</button>
                             </div>
-                        </form>
                         </div>
-                        
+
                     </div>
                     
                     <script>
+                        
                         async function handleAddVoter(){
-                            console.log("test")
-                            try {
-                                const docRef = await addDoc(collection(db, "voters"), {
-                                 address: "Ada",
-                                 age: 19,
-                                 card: "abcsd",
-                                 name: "An",
-                                 province:"Quang Ninh"
-                            });
-                             console.log("Document written with ID: ", docRef.id);
-                            } catch (e) {
-                                 console.error("Error adding document: ", e);
-                            }   
+                            console.log("test");
+                            const db = firebase.firestore()
+
+                            const address = $('#voter-address').val();
+                            const name = $('#voter-name').val();
+                            const card = $('#voter-card').val();
+                            const age = Number($('#voter-age').val());
+                            const province = $('#voter-province').val();
+                            db.collection("voters").add({
+                                address : address,
+                                age : age,
+                                card : card,
+                                name : name,
+                                province : province
+                            }).then(() => {
+                                console.log("Data saved")
+                            }).catch((error) => {
+                                console.log(error)
+                            })
+                            
                         }
+                        
+                        window.addEventListener('load', (event) => {
+                            console.log('The page has fully loaded');
+                            initFirebase();
+                        });
+
+                        async function initFirebase(){
+                            const firebaseConfig = {
+                              apiKey: "AIzaSyBSF4DTIfBAs1B9OkVSmdSXKkx2FIGFpqU",
+                              authDomain: "voting-system-94342.firebaseapp.com",
+                              projectId: "voting-system-94342",
+                              storageBucket: "voting-system-94342.appspot.com",
+                              messagingSenderId: "390102264210",
+                              appId: "1:390102264210:web:0a35051ec937ecc635f94b",
+                              measurementId: "G-DJB7NYKSB4"
+                            };
+                          
+                            // Initialize Firebase
+                            const app = firebase.initializeApp(firebaseConfig);
+                            const db = firebase.firestore();
+                            console.log(app)
+
+                        }
+                         
                     </script>
+
 
                     <script>
                         async function giveRightToVoter(){
                             const address = $('#voter-address').val();
+                            const name = $('#voter-name').val();
+                            const card = $('#voter-card').val();
+                            const age = Number($('#voter-age').val());
+                            const province = $('#voter-province').val();
 
-                            if (!address) {
+                            if (!address ) {
                                 alert("Voter address is not empty");
                                 return;
+                            }else if(!name){
+                                alert("Name-Voter address is not empty");
+                                return;
+                            }else if(!card) { 
+                                alert("Identity-Voter address is not empty");
+                                return;
+                            }else if(!age || age <18){
+                                alert("Age-Voter address is not illegal");
+                                return;
                             }
-
-                            console.log(address)
 
                             const result = await Ballot.giveRightToVote(address);
 
                             alert(result.message);
+
+                            const db = firebase.firestore()
+                            // add data voters to firebase
+                            if(result.success){ 
+                            await db.collection("voters").add({
+                                address : address,
+                                age : age,
+                                card : card,
+                                name : name,
+                                province : province
+                            }).then(() => {
+                                console.log("Data saved")
+                            }).catch((error) => {
+                                console.log(error)
+                            })
+                            window.location.reload();
+                        }
+
 
 
                         }
@@ -243,6 +306,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
+    
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -256,10 +321,14 @@
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="./js/ballot.js" type="text/javascript"></script>
 
-    <!-- connect with database -->
+    <!-- connect firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="./App.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js" ></script>
+    
+
+
+    
+    
     
     
 </body>
