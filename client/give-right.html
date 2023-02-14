@@ -21,6 +21,8 @@
 </head>
 
 <body id="page-top">
+    
+
 
     <div id="wrapper">
 
@@ -104,30 +106,187 @@
                         </div>
                         <div class="card-body">
                             <div>
+                                
+
                                 <div class="form-group">
                                   <label for="voter-address">Voter address</label>
                                   <input type="text" class="form-control" id="voter-address" placeholder="Enter voter address">
+                                  <label for="voter-name">Voter name</label>
+                                  <input type="text" class="form-control" id="voter-name" placeholder="Enter Name">
+                                  <label for="voter-age">Voter age</label>
+                                  <input type="number" class="form-control" id="voter-age" placeholder="Enter Age">
+                                  <label for="voter-card">Voter identity card</label>
+                                  <input type="text" class="form-control" id="voter-card" placeholder="Enter identity card ">
+                                  <label for="voter-province">Voter province</label>
+                                  <select id="voter-province" class="form-control"  name= "flatform"  >
+                                    <option value="An Giang">An Giang
+                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu
+                                    <option value="Bắc Giang">Bắc Giang
+                                    <option value="Bắc Kạn">Bắc Kạn
+                                    <option value="Bạc Liêu">Bạc Liêu
+                                    <option value="Bắc Ninh">Bắc Ninh
+                                    <option value="Bến Tre">Bến Tre
+                                    <option value="Bình Định">Bình Định
+                                    <option value="Bình Dương">Bình Dương
+                                    <option value="Bình Phước">Bình Phước
+                                    <option value="Bình Thuận">Bình Thuận
+                                    <option value="Bình Thuận">Bình Thuận
+                                    <option value="Cà Mau">Cà Mau
+                                    <option value="Cao Bằng">Cao Bằng
+                                    <option value="Đắk Lắk">Đắk Lắk
+                                    <option value="Đắk Nông">Đắk Nông
+                                    <option value="Điện Biên">Điện Biên
+                                    <option value="Đồng Nai">Đồng Nai
+                                    <option value="Đồng Tháp">Đồng Tháp
+                                    <option value="Đồng Tháp">Đồng Tháp
+                                    <option value="Gia Lai">Gia Lai
+                                    <option value="Hà Giang">Hà Giang
+                                    <option value="Hà Nam">Hà Nam
+                                    <option value="Hà Tĩnh">Hà Tĩnh
+                                    <option value="Hải Dương">Hải Dương
+                                    <option value="Hậu Giang">Hậu Giang
+                                    <option value="Hòa Bình">Hòa Bình
+                                    <option value="Hưng Yên">Hưng Yên
+                                    <option value="Khánh Hòa">Khánh Hòa
+                                    <option value="Kiên Giang">Kiên Giang
+                                    <option value="Kon Tum">Kon Tum
+                                    <option value="Lai Châu">Lai Châu
+                                    <option value="Lâm Đồng">Lâm Đồng
+                                    <option value="Lạng Sơn">Lạng Sơn
+                                    <option value="Lào Cai">Lào Cai
+                                    <option value="Long An">Long An
+                                    <option value="Nam Định">Nam Định
+                                    <option value="Nghệ An">Nghệ An
+                                    <option value="Ninh Bình">Ninh Bình
+                                    <option value="Ninh Thuận">Ninh Thuận
+                                    <option value="Phú Thọ">Phú Thọ
+                                    <option value="Quảng Bình">Quảng Bình
+                                    <option value="Quảng Bình">Quảng Bình
+                                    <option value="Quảng Ngãi">Quảng Ngãi
+                                    <option value="Quảng Ninh">Quảng Ninh
+                                    <option value="Quảng Trị">Quảng Trị
+                                    <option value="Sóc Trăng">Sóc Trăng
+                                    <option value="Sơn La">Sơn La
+                                    <option value="Tây Ninh">Tây Ninh
+                                    <option value="Thái Bình">Thái Bình
+                                    <option value="Thái Nguyên">Thái Nguyên
+                                    <option value="Thanh Hóa">Thanh Hóa
+                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế
+                                    <option value="Tiền Giang">Tiền Giang
+                                    <option value="Trà Vinh">Trà Vinh
+                                    <option value="Tuyên Quang">Tuyên Quang
+                                    <option value="Vĩnh Long">Vĩnh Long
+                                    <option value="Vĩnh Phúc">Vĩnh Phúc
+                                    <option value="Yên Bái">Yên Bái
+                                    <option value="Phú Yên">Phú Yên
+                                    <option value="Cần Thơ">Tp.Cần Thơ
+                                    <option value="Đà Nẵng">Tp.Đà Nẵng
+                                    <option value="Hải Phòng">Tp.Hải Phòng
+                                    <option value="Hà Nội">Tp.Hà Nội
+                                    <option value="HCM">TP HCM
+                                    </select>
                                 </div>
+                            
                                 <button class="btn btn-primary" onclick="giveRightToVoter()">Submit</button>
                             </div>
                         </div>
-                        
+
                     </div>
                     
                     <script>
+                        
+                        async function handleAddVoter(){
+                            console.log("test");
+                            const db = firebase.firestore()
+
+                            const address = $('#voter-address').val();
+                            const name = $('#voter-name').val();
+                            const card = $('#voter-card').val();
+                            const age = Number($('#voter-age').val());
+                            const province = $('#voter-province').val();
+                            db.collection("voters").add({
+                                address : address,
+                                age : age,
+                                card : card,
+                                name : name,
+                                province : province
+                            }).then(() => {
+                                console.log("Data saved")
+                            }).catch((error) => {
+                                console.log(error)
+                            })
+                            
+                        }
+                        
+                        window.addEventListener('load', (event) => {
+                            console.log('The page has fully loaded');
+                            initFirebase();
+                        });
+
+                        async function initFirebase(){
+                            const firebaseConfig = {
+                              apiKey: "AIzaSyBSF4DTIfBAs1B9OkVSmdSXKkx2FIGFpqU",
+                              authDomain: "voting-system-94342.firebaseapp.com",
+                              projectId: "voting-system-94342",
+                              storageBucket: "voting-system-94342.appspot.com",
+                              messagingSenderId: "390102264210",
+                              appId: "1:390102264210:web:0a35051ec937ecc635f94b",
+                              measurementId: "G-DJB7NYKSB4"
+                            };
+                          
+                            // Initialize Firebase
+                            const app = firebase.initializeApp(firebaseConfig);
+                            const db = firebase.firestore();
+                            console.log(app)
+
+                        }
+                         
+                    </script>
+
+
+                    <script>
                         async function giveRightToVoter(){
                             const address = $('#voter-address').val();
+                            const name = $('#voter-name').val();
+                            const card = $('#voter-card').val();
+                            const age = Number($('#voter-age').val());
+                            const province = $('#voter-province').val();
 
-                            if (!address) {
+                            if (!address ) {
                                 alert("Voter address is not empty");
                                 return;
+                            }else if(!name){
+                                alert("Name-Voter address is not empty");
+                                return;
+                            }else if(!card) { 
+                                alert("Identity-Voter address is not empty");
+                                return;
+                            }else if(!age || age <18){
+                                alert("Age-Voter address is not illegal");
+                                return;
                             }
-
-                            console.log(address)
 
                             const result = await Ballot.giveRightToVote(address);
 
                             alert(result.message);
+
+                            const db = firebase.firestore()
+                            // add data voters to firebase
+                            if(result.success){ 
+                            await db.collection("voters").add({
+                                address : address,
+                                age : age,
+                                card : card,
+                                name : name,
+                                province : province
+                            }).then(() => {
+                                console.log("Data saved")
+                            }).catch((error) => {
+                                console.log(error)
+                            })
+                            window.location.reload();
+                        }
+
 
 
                         }
@@ -147,6 +306,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
+    
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -160,6 +321,16 @@
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="./js/ballot.js" type="text/javascript"></script>
 
+    <!-- connect firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js" ></script>
+    
+
+
+    
+    
+    
+    
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 const Web3 = require('web3')
 const Ballot = require('./contracts/Ballot.json')
 
+
 const init = async () => {
     const web3 = new Web3('ws://127.0.0.1:7545/');
     const contract = await new web3.eth.Contract(Ballot.abi, '0x65fca575DD78980Ca8272C3E024fC4e0F52C5F6c');
@@ -21,5 +22,7 @@ const init = async () => {
     //proposal = await contract.methods.winningProposal().call();
 
     // console.log(owner.events);
+
+      
 }
 init()

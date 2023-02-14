@@ -18,6 +18,8 @@
 
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -195,6 +197,182 @@
                                 </table>
                             </div>
                         </div>
+                        
+                    </div>
+
+
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Proportion by age for proposals</h6>
+                        </div>
+                        <div class="card-body">
+                            <script>
+                                window.addEventListener('load', (event) => {
+                                    console.log('The page has fully loaded');
+                                    initFirebase();
+                                    createChart();
+                                });
+                                function initFirebase(){
+                                    const firebaseConfig = {
+                                      apiKey: "AIzaSyBSF4DTIfBAs1B9OkVSmdSXKkx2FIGFpqU",
+                                      authDomain: "voting-system-94342.firebaseapp.com",
+                                      projectId: "voting-system-94342",
+                                      storageBucket: "voting-system-94342.appspot.com",
+                                      messagingSenderId: "390102264210",
+                                      appId: "1:390102264210:web:0a35051ec937ecc635f94b",
+                                      measurementId: "G-DJB7NYKSB4"
+                                    };
+                                    // Initialize Firebase
+                                    const app = firebase.initializeApp(firebaseConfig);
+                                    const db = firebase.firestore();
+
+                                    console.log(app)
+                                    console.log(db)
+                                }
+                                async function getCountDocument(nameCollection){
+                                    console.log("start 0")
+                                    var count=0;
+                                    const db = firebase.firestore();
+                                    return await db.collection(nameCollection)
+                                    .get()
+                                    .then(snap => {
+                                        snap.forEach(doc => {
+                                            count++;
+                                            });
+                                        return count;  
+                                    });
+                                    
+                                }
+                                
+                                
+                                async function getCountYouthAge(nameProposal){
+                                    console.log("start1")
+                                    var youthAge=0;
+                                    const db = firebase.firestore();
+                                    return await db.collection("voters")
+                                    .where("age", "<=", 30)
+                                    .where("age",">=",18)
+                                    .get()
+                                    .then(snap => {
+                                        snap.forEach(doc => {
+                                            if(doc.get("vote")==nameProposal){
+                                            console.log(doc.get("vote"));
+                                            youthAge++;
+                                            }
+                                            });
+                                        return youthAge;  
+                                    });
+                                    
+                                }
+                                async function getCountAdultAge(nameProposal){
+                                    console.log("start2")
+                                    var adultAge=0;
+                                    const db = firebase.firestore();
+                                    return await db.collection("voters")
+                                    .where("age", ">", 30)
+                                    .where("age","<=",60)
+                                    .get()
+                                    .then(snap => {
+                                        snap.forEach(doc => {
+                                            if(doc.get("vote")==nameProposal){
+                                            adultAge++;
+                                            }
+                                            });
+                                        return adultAge;  
+                                    });
+                                    
+                                }
+                                async function getCountOlderAge(nameProposal){
+                                    console.log("start3")
+                                    var olderAge=0;
+                                    const db = firebase.firestore();
+                                    return await db.collection("voters")
+                                    .where("age", ">", 60)
+                                    .get()
+                                    .then(snap => {
+                                        snap.forEach(doc => {
+                                            if(doc.get("vote")==nameProposal){
+                                            olderAge++;
+                                            }
+                                            });
+                                        return olderAge;  
+                                    });
+                                    
+                                }
+                                
+
+                            </script>
+
+                            <canvas id="myChart1" style="width: 100%; max-width: 600px;" hidden  ></canvas>
+                            <canvas id="myChart2" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart3" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart4" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart5" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart6" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart7" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart8" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart9" style="width: 100%; max-width: 600px;" hidden></canvas>
+                            <canvas id="myChart10" style="width: 100%; max-width: 600px;" hidden></canvas>
+
+
+                            <script  script>
+                                async function createChart(){    
+                                var  count =0;
+                                const db = firebase.firestore();
+                                db.collection("proposals")
+                                .get()
+                                .then(snap => {
+                                    
+                                    snap.forEach(async doc => {
+                                        count ++;
+                                        var namechart = "myChart"+count; 
+                                        console.log("count ="+count)
+                                        console.log("namechart" +namechart)
+                                        var countYouth = await getCountYouthAge(doc.get("name"));
+                                        console.log(countYouth);
+                                        var countAdult = await getCountAdultAge(doc.get("name"));
+                                        console.log(countAdult);
+                                        var countOlder = await getCountOlderAge(doc.get("name"));
+                                        console.log(countOlder);    
+                                        var xValues = ["18-30 age", "31-60 age", "over 60 age"];
+                                        var yValues = [countYouth, countAdult, countOlder];
+                                        var barColors = [
+                                            "#b91d47",
+                                            "#00aba9",
+                                            "#2b5797",
+                                        ];
+                                        console.log(namechart)
+                                        document.getElementById(namechart).hidden = false;
+
+                                        new Chart(namechart, {
+                                            type: "pie",
+                                            data: {
+                                            labels: xValues,
+                                            datasets: [{
+                                            backgroundColor: barColors,
+                                            data: yValues,
+                                            }]
+                                        },
+                                        options: {
+                                        title: {
+                                        display: true,
+                                        text: "Percent of people voted for "+doc.get("name")
+                                        }
+                                        }
+                                        });
+                                    });
+                                });
+
+                                
+                                
+                            }
+                            
+                            </script>
+
+                            
+
+                        </div>
                     </div>
 
                     
@@ -205,6 +383,7 @@
 
         </div>
         <!-- End of Content Wrapper -->
+        
 
     </div>
     <!-- End of Page Wrapper -->
@@ -232,7 +411,6 @@
             await Ballot.initContract()
             .then(async _ => {
                 const result = await Ballot.getResult()
-                
                 console.log(result)
                 if (result.success == false){
                     alert(result.message);
@@ -254,9 +432,12 @@
             });
             
         });
-        
+
     </script>
 
+    <!-- connect firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js" ></script>
 </body>
 
 </html>

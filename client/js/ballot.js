@@ -1,4 +1,4 @@
-contractAdress = '0x051620D212e4aE4863e9E8ffBf3C7f917Ec7EcF3';
+contractAdress = '0xAb2D634723d5b6863b800b24de9F9308c0150364';
 provider = 'ws://localhost:7545'
 maxGas = 1000000;
 

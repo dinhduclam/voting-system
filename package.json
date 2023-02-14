@@ -1,0 +1,28 @@
+{
+  "name": "voting-system",
+  "version": "1.0.0",
+  "description": "- Gananche: https://trufflesuite.com/ganache/  \r  - Nodejs: https://nodejs.org/en/download/  \r  - In a terminal, use NPM to install Truffle: npm install -g truffle  \r  - In VS Code, install extension:  \r     + solidity: https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity  \r     + Live Server: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer  \r  - Add MetaMask extension  \r # Deploy contract:\r In VS Code terminal: truffle migrate  \r Get contract address from response in 'contract address' field\r Assign new contract address to *contractAdress* variable in *./client/js/ballot.js*",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinhduclam/voting-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dinhduclam/voting-system/issues"
+  },
+  "homepage": "https://github.com/dinhduclam/voting-system#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "firebase": "^9.17.1",
+    "firebase-admin": "^11.5.0"
+  }
+}
